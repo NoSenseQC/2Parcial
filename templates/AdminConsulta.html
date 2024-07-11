@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Consulta de Solicitud</title>
+    <link href="{{ url_for('static', filename='bootstrap-5.3.2/dist/css/bootstrap.css') }}" rel="stylesheet">
+    <style>
+        /* Estilos adicionales si es necesario */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Panel de Administración</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Puedes agregar elementos adicionales al navbar si es necesario -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Consultar y Administrar Solicitudes</h1>
+        <form action="{{ url_for('admin_consulta') }}" method="GET">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="curp" class="form-label">Buscar por CURP:</label>
+                    <input type="text" class="form-control" id="curp" name="curp" placeholder="Ingresa CURP">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary mt-4">Buscar Solicitud</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Simulación de resultados de búsqueda -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Datos de la Solicitud</h5>
+                <p><strong>CURP:</strong> ABCD123456EFG78901</p>
+                <p><strong>Nombre:</strong> Juan Pérez Gómez</p>
+                <p><strong>Teléfono:</strong> 555-123-4567</p>
+                <p><strong>Celular:</strong> 555-987-6543</p>
+                <p><strong>Correo:</strong> juanperez@example.com</p>
+                <p><strong>Nivel de interés:</strong> Secundaria</p>
+                <p><strong>Municipio de estudio:</strong> Municipio 1</p>
+                <p><strong>Asunto:</strong> Asunto 2</p>
+                <p><strong>Estado:</strong> Pendiente</p>
+
+                <!-- Opciones para administrar la solicitud (simuladas) -->
+                <div class="mt-4">
+                    <button type="button" class="btn btn-danger">Eliminar Solicitud</button>
+                    <button type="button" class="btn btn-secondary">Modificar Solicitud</button>
+                    <button type="button" class="btn btn-info">Cambiar Estado</button>
+                </div>
+                <!-- UserRegistrar.html / User_Modificar -->
+            <div class="row mt-3">
+                <div class="col">
+                    <a href="{{ url_for('admin_menu') }}" class="btn btn-danger">Regresar</a>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  
+</body>
+</html>

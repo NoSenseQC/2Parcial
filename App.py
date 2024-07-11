@@ -1,4 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import qrcode
+import random  # Para generar números de turno simulados
 
 app = Flask(__name__)
 
@@ -33,13 +38,58 @@ def admin_consulta():
 def admin_catalogos():
     return render_template('AdminCatalogos.html')
 
-@app.route('/User_Registrar')
+@app.route('/User_Registrar', methods=['GET', 'POST'])
 def user_registrar():
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        curp = request.form['curp']
+        nombre = request.form['nombre']
+        paterno = request.form['paterno']
+        materno = request.form['materno']
+        telefono = request.form['telefono']
+        celular = request.form['celular']
+        correo = request.form['correo']
+        nivel = request.form['nivel']
+        municipio = request.form['municipio']
+        asunto = request.form['asunto']
+
+        # Generar número de turno simulado
+        numero_turno = random.randint(1000, 9999)  # Número de turno aleatorio de 4 dígitos
+
+        # Generar PDF
+        pdf_buffer = generar_pdf(curp, nombre, paterno, materno, numero_turno)
+
+        # Generar QR
+        generar_qr(curp)
+
+        return send_file(pdf_buffer, as_attachment=True, download_name='solicitud.pdf', mimetype='application/pdf')
+
     return render_template('UserRegistrar.html')
 
-@app.route('/User_Modificar')
-def user_modificar():
-    return render_template('UserModificar.html')
+def generar_pdf(curp, nombre, paterno, materno, numero_turno):
+    buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    c.drawString(100, 750, "Solicitud de Registro")
+    c.drawString(100, 730, f"Nombre: {nombre} {paterno} {materno}")
+    c.drawString(100, 710, f"CURP: {curp}")
+    c.drawString(100, 690, f"Turno Asignado: {numero_turno}")
+    c.save()
+
+    buffer.seek(0)
+    return buffer
+
+def generar_qr(curp):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(curp)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save("static/qrcode.png")
 
 if __name__ == '__main__':
     app.run(debug=True)
