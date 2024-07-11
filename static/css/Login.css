@@ -14,10 +14,20 @@
     width: 45%;
 }
 .section-title {
-    font-size: 1.5rem;
+    font-size: 2rem;  /* Aumenta el tamaño de "Administrador" y "Usuario" */
     text-align: center;
     margin-bottom: 1rem;
 }
 .welcome-title {
-    font-size: 3rem;
+    font-size: 4rem;  /* Aumenta el tamaño del texto de "¡Bienvenido!" */
+}
+.user-column {
+    display: flex;
+    flex-direction: column;
+}
+.form-group {
+    margin-bottom: 2rem;  /* Separa los campos de "Usuario" y "Contraseña" */
+}
+.btn {
+    margin-bottom: 1rem;  /* Separa los botones de solicitud y el botón de ingresar */
 }

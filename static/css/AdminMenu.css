@@ -1,0 +1,35 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.dashboard {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard h2 {
+    font-size: 1.5rem;
+    color: #343a40;
+}
+
+.admin-options {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-options h2 {
+    font-size: 1.5rem;
+    color: #343a40;
+}
+
+.d-grid a {
+    margin-bottom: 0.5rem;
+}
+
+.d-grid a:last-child {
+    margin-bottom: 0;
+}
