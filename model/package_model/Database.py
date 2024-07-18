@@ -11,7 +11,7 @@ class Database :
                                        passwd='',
                                        db='db_turno')
             self.cursor=self.conn.cursor()
-            print("ok") 
+            #print("ok") 
        except Exception as e:
            print(e)
  
