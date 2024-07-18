@@ -1,30 +1,44 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify, session
+import model.package_model.Administradores as Administradores_o
+import model.package_model.Municipio as Municipio_o  # Importar el modelo de Municipio
+import model.package_model.Asunto as Asunto_o  # Importar el modelo de Asunto
+import model.package_model.Nivel as Nivel_o  # Importar el modelo de Nivel
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import qrcode
 import random  # Para generar números de turno simulados
 
+# Importar métodos estáticos
+from model.package_model.Administradores import Administradores
+
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Necesario para utilizar sesiones
 
 @app.route('/')
 def login():
     return render_template('Login.html')
 
-@app.route('/admin_login', methods=['POST'])
+@app.route('/admin_login', methods=['GET','POST'])
 def admin_login():
-    username = request.form['username']
-    password = request.form['password']
+    try:
+        data = request.get_json()  # obtener datos de la solicitud JSON
+        if data is None:
+            raise ValueError("No se recibieron datos JSON")
+        admin = data['admin']
+        contrasena = data['contrasena']
+        if admin.strip() == '' or contrasena.strip() == '':
+            return jsonify({'status': 'error', 'message': 'El usuario y la contraseña no deben ir vacíos'})
 
-    # Validación simple de campos vacíos
-    if username.strip() == '' or password.strip() == '':
-        return redirect(url_for('login'))  # Redirige al formulario de login si hay campos vacíos
-
-    # Lógica de autenticación
-    if username == 'admin' and password == 'password':  # Ejemplo básico de autenticación
-        return redirect(url_for('admin_menu'))
-    else:
-        return redirect(url_for('login'))  # Redirige al formulario de login si la autenticación falla
+        existe = Administradores.verifica_administrador(admin, contrasena)
+        if existe:
+            session['admin_id'] = admin
+            return jsonify({'status': 'success', 'message': 'Autenticación exitosa'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Nombre de usuario o contraseña incorrectos'})
+    except Exception as e:
+        print(f"Error en admin_login: {e}")
+        return jsonify({'status': 'error', 'message': 'Error en el servidor: ' + str(e)})
 
 @app.route('/admin_menu')
 def admin_menu():
@@ -40,6 +54,12 @@ def admin_catalogos():
 
 @app.route('/User_Registrar', methods=['GET', 'POST'])
 def user_registrar():
+    municipio_model = Municipio_o.Municipio()  # Crear instancia del modelo Municipio
+    asuntos_model = Asunto_o.Asunto()  # Crear instancia del modelo Asunto
+    niveles_model = Nivel_o.Nivel()  # Crear instancia del modelo Nivel
+    municipios = municipio_model.obtener_municipios()  # Obtener lista de municipios
+    asuntos = asuntos_model.obtener_asuntos()  # Obtener lista de asuntos
+    niveles = niveles_model.obtener_niveles()  # Obtener lista de niveles
     if request.method == 'POST':
         # Obtener datos del formulario
         curp = request.form['curp']
@@ -64,7 +84,7 @@ def user_registrar():
 
         return send_file(pdf_buffer, as_attachment=True, download_name='solicitud.pdf', mimetype='application/pdf')
 
-    return render_template('UserRegistrar.html')
+    return render_template('UserRegistrar.html', municipios=municipios, asuntos=asuntos, niveles=niveles)  # Pasar municipios, asuntos y niveles a la plantilla
 
 def generar_pdf(curp, nombre, paterno, materno, numero_turno):
     buffer = BytesIO()

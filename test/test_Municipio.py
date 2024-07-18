@@ -1,7 +1,7 @@
-# import model.package_model.Municipio as Municipio
-from model.package_model.Municipio import Municipio
+import model.package_model.Municipio as Municipio
+# from model.package_model.Municipio import Municipio
 
-# obj_municipio = Municipio.Municipio()
+obj_municipio = Municipio.Municipio()
 
 # lista_municipios = obj_municipio.obtener_municipios()
 
@@ -16,19 +16,19 @@ from model.package_model.Municipio import Municipio
 # municipio_id = obj_municipio.obtener_municipio_por_id(1)
 # print(municipio_id)
 
-# print("\n======INSERTADO===========\n")
-# id=0
-# nom='edsades'
-# if len(nom)>2:
-#     obj_municipio_new=Municipio.Municipio(id,nom)
-#     result_ins=obj_municipio.agregar_municipio(obj_municipio_new)
+print("\n======INSERTADO===========\n")
+id=0
+nom='Monterrey'
+if len(nom)>2:
+    obj_municipio_new=Municipio.Municipio(id,nom)
+    result_ins=obj_municipio.agregar_municipio(obj_municipio_new)
 
-#     if result_ins==1:
-#         print("Registro insertado")
-#     else:
-#         print("Error al insertar")
-# else:
-#     print("Nombre no valido")
+    if result_ins==1:
+        print("Registro insertado")
+    else:
+        print("Error al insertar")
+else:
+    print("Nombre no valido")
 
 # print("\n======borrado===========\n")
 # id = 11
@@ -52,5 +52,5 @@ from model.package_model.Municipio import Municipio
 # else:
 #     print("Nombre no valido")
 
-cuantos = Municipio.existe_municipio('Saltillo')
-print (cuantos)
+# cuantos = Municipio.existe_municipio('Saltillo')
+# print (cuantos)

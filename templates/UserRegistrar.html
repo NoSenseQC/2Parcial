@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar y Modificar Solicitud</title>
-    <link href="{{ url_for('static', filename='bootstrap-5.3.2/dist/css/bootstrap.css') }}" rel="stylesheet"> 
+    <link href="{{ url_for('static', filename='bootstrap-5.3.2/dist/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/Login.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -21,11 +21,16 @@
     </nav>
     <div class="container mt-4">
         <h1 class="text-center mb-4">Registrar y Modificar Solicitud</h1>
+
+        <!-- Formulario de Registro -->
         <form action="{{ url_for('user_registrar') }}" method="POST" onsubmit="return validaFormulario()">
+            <h2>Registrar Solicitud</h2>
             <div class="row mb-3">
                 <div class="col">
                     <label for="curp" class="form-label">CURP:</label>
                     <input type="text" class="form-control" id="curp" name="curp" placeholder="Ingresa CURP">
+                    <label for="solicitante" class="form-label">Nombre de quien realiza el trámite:</label>
+                    <input type="text" class="form-control" id="solicitante" name="solicitante" placeholder="Ingresa tu nombre y apellido">
                 </div>
             </div>
             <div class="row mb-3">
@@ -61,27 +66,27 @@
                     <label for="nivel" class="form-label">Nivel de interés:</label>
                     <select class="form-select" id="nivel" name="nivel">
                         <option value="">Seleccionar...</option>
-                        <option value="primaria">Primaria</option>
-                        <option value="secundaria">Secundaria</option>
-                        <option value="preparatoria">Preparatoria</option>
+                        {% for nivel in niveles %}
+                            <option value="{{ nivel[0] }}">{{ nivel[1] }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col">
                     <label for="municipio" class="form-label">Municipio de estudio:</label>
                     <select class="form-select" id="municipio" name="municipio">
                         <option value="">Seleccionar...</option>
-                        <option value="municipio1">Municipio 1</option>
-                        <option value="municipio2">Municipio 2</option>
-                        <option value="municipio3">Municipio 3</option>
+                        {% for municipio in municipios %}
+                            <option value="{{ municipio[0] }}">{{ municipio[1] }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col">
                     <label for="asunto" class="form-label">Asunto:</label>
                     <select class="form-select" id="asunto" name="asunto">
                         <option value="">Seleccionar...</option>
-                        <option value="asunto1">Asunto 1</option>
-                        <option value="asunto2">Asunto 2</option>
-                        <option value="asunto3">Asunto 3</option>
+                        {% for asunto in asuntos %}
+                            <option value="{{ asunto[0] }}">{{ asunto[1] }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -89,22 +94,98 @@
                 <div class="col">
                     <button type="submit" class="btn btn-primary">Registrar Solicitud</button>
                 </div>
+            </div>
+        </form>
+
+        <!-- Formulario de Búsqueda -->
+        <h2>Buscar Solicitud</h2>
+        <form id="buscar-solicitud-form" onsubmit="return buscarSolicitud()">
+            <div class="row mb-3">
                 <div class="col">
-                    <!-- Botón de Modificar y campos para modificar -->
-                    <div class="form-group mb-3">
-                        <label for="modificar-curp" class="form-label">CURP a modificar:</label>
-                        <input type="text" class="form-control" id="modificar-curp" name="modificar-curp" placeholder="Ingresa CURP">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="numero-turno" class="form-label">Número de turno:</label>
-                        <input type="text" class="form-control" id="numero-turno" name="numero-turno" placeholder="Número de turno">
-                    </div>
-                    <button type="button" class="btn btn-secondary">Modificar Solicitud</button>
+                    <label for="buscar-curp" class="form-label">CURP:</label>
+                    <input type="text" class="form-control" id="buscar-curp" name="buscar-curp" placeholder="Ingresa CURP">
+                </div>
+                <div class="col">
+                    <label for="buscar-turno" class="form-label">Número de turno:</label>
+                    <input type="text" class="form-control" id="buscar-turno" name="buscar-turno" placeholder="Número de turno">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-secondary mt-4">Buscar Solicitud</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Formulario de Modificación (se muestra después de la búsqueda) -->
+        <form id="modificar-solicitud-form" action="{{ url_for('user_registrar') }}" method="POST" style="display: none;">
+            <h2>Modificar Solicitud</h2>
+            <input type="hidden" id="modificar-curp" name="modificar-curp">
+            <input type="hidden" id="modificar-turno" name="modificar-turno">
+            <!-- Los campos se rellenarán automáticamente después de la búsqueda -->
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="modificar-nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="modificar-nombre" name="modificar-nombre">
+                </div>
+                <div class="col">
+                    <label for="modificar-paterno" class="form-label">Paterno:</label>
+                    <input type="text" class="form-control" id="modificar-paterno" name="modificar-paterno">
+                </div>
+                <div class="col">
+                    <label for="modificar-materno" class="form-label">Materno:</label>
+                    <input type="text" class="form-control" id="modificar-materno" name="modificar-materno">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="modificar-telefono" class="form-label">Teléfono:</label>
+                    <input type="text" class="form-control" id="modificar-telefono" name="modificar-telefono">
+                </div>
+                <div class="col">
+                    <label for="modificar-celular" class="form-label">Celular:</label>
+                    <input type="text" class="form-control" id="modificar-celular" name="modificar-celular">
+                </div>
+                <div class="col">
+                    <label for="modificar-correo" class="form-label">Correo:</label>
+                    <input type="email" class="form-control" id="modificar-correo" name="modificar-correo">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="modificar-nivel" class="form-label">Nivel de interés:</label>
+                    <select class="form-select" id="modificar-nivel" name="modificar-nivel">
+                        <option value="">Seleccionar...</option>
+                        {% for nivel in niveles %}
+                            <option value="{{ nivel[0] }}">{{ nivel[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="modificar-municipio" class="form-label">Municipio de estudio:</label>
+                    <select class="form-select" id="modificar-municipio" name="modificar-municipio">
+                        <option value="">Seleccionar...</option>
+                        {% for municipio in municipios %}
+                            <option value="{{ municipio[0] }}">{{ municipio[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="modificar-asunto" class="form-label">Asunto:</label>
+                    <select class="form-select" id="modificar-asunto" name="modificar-asunto">
+                        <option value="">Seleccionar...</option>
+                        {% for asunto in asuntos %}
+                            <option value="{{ asunto[0] }}">{{ asunto[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <button type="submit" class="btn btn-warning">Modificar Solicitud</button>
                 </div>
             </div>
         </form>
     </div>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
     <script src="{{ url_for('static', filename='js/UserRegistrar_script.js') }}"></script>
 </body>
 </html>

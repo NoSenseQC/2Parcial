@@ -1,6 +1,6 @@
-
 function validaFormulario() {
     let js_curp = getTextInputById("curp");
+    let js_solicitante = getTextInputById("solicitante");
     let js_nombre = getTextInputById("nombre");
     let js_paterno = getTextInputById("paterno");
     let js_materno = getTextInputById("materno");
@@ -18,7 +18,10 @@ function validaFormulario() {
         alert("El CURP ingresado no es válido");
         return false;
     }
-
+    if (js_solicitante.trim().length === 0) {
+        alert("El nombre del solicitante es obligatorio");
+        return false;
+    }
     if (js_nombre.trim().length === 0) {
         alert("El campo nombre es obligatorio");
         return false;
@@ -71,3 +74,40 @@ function validarCURP(curp) {
 let getTextInputById = (id) => {
     return document.getElementById(id).value;
 };
+
+function buscarSolicitud() {
+    const curp = document.getElementById('buscar-curp').value;
+    const turno = document.getElementById('buscar-turno').value;
+    // Aquí iría la llamada al backend para buscar la solicitud
+
+    // Simulación de datos encontrados
+    const solicitudEncontrada = {
+        curp: curp,
+        turno: turno,
+        nombre: 'Nombre Ejemplo',
+        paterno: 'Apellido Paterno',
+        materno: 'Apellido Materno',
+        telefono: '1234567890',
+        celular: '0987654321',
+        correo: 'ejemplo@correo.com',
+        nivel: 'preparatoria',
+        municipio: 'municipio1',
+        asunto: 'asunto1'
+    };
+
+    // Si se encuentra la solicitud, se rellenan los campos del formulario de modificación
+    document.getElementById('modificar-solicitud-form').style.display = 'block';
+    document.getElementById('modificar-curp').value = solicitudEncontrada.curp;
+    document.getElementById('modificar-turno').value = solicitudEncontrada.turno;
+    document.getElementById('modificar-nombre').value = solicitudEncontrada.nombre;
+    document.getElementById('modificar-paterno').value = solicitudEncontrada.paterno;
+    document.getElementById('modificar-materno').value = solicitudEncontrada.materno;
+    document.getElementById('modificar-telefono').value = solicitudEncontrada.telefono;
+    document.getElementById('modificar-celular').value = solicitudEncontrada.celular;
+    document.getElementById('modificar-correo').value = solicitudEncontrada.correo;
+    document.getElementById('modificar-nivel').value = solicitudEncontrada.nivel;
+    document.getElementById('modificar-municipio').value = solicitudEncontrada.municipio;
+    document.getElementById('modificar-asunto').value = solicitudEncontrada.asunto;
+
+    return false; // Prevenir el envío del formulario de búsqueda
+}
