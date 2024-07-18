@@ -1,3 +1,4 @@
+la carpeta se llama asi pporque segui utilizando el mismo proyecto del 2do parcial
 
 para utilizar el login, los admin se encuentran en la base de datos
 pero aqui esta uno: Nombre de usuario: "Admin1" Contraseña: "password1"
