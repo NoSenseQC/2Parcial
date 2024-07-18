@@ -8,6 +8,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import qrcode
 import random  # Para generar números de turno simulados
+import requests
 
 # Importar métodos estáticos
 from model.package_model.Administradores import Administradores
@@ -44,13 +45,35 @@ def admin_login():
 def admin_menu():
     return render_template('AdminMenu.html')
 
+@app.route('/logout')
+def logout():
+    # Eliminar la sesión del usuario
+    session.pop('username', None)  # Asegúrate de reemplazar 'username' con tu clave de sesión
+
+    # Redirigir a la página de inicio de sesión u otra página pública
+    return redirect(url_for('login_html'))
+
 @app.route('/admin_consulta')
 def admin_consulta():
     return render_template('AdminConsulta.html')
 
+@app.route('/curso_api')
+def curso_api():
+    return render_template('Cursosapi.html')
+
 @app.route('/admin_catalogos')
 def admin_catalogos():
     return render_template('AdminCatalogos.html')
+
+@app.route('/mostrar_todos')
+def mostrar_todos():
+    url = 'https://scompcenter.com/david/rest_api_alu_materias_daw/api/lista_planes_materias.php'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return jsonify(data)
+    else:
+        return jsonify({"error": "No se pudieron obtener los datos"}), response.status_
 
 @app.route('/User_Registrar', methods=['GET', 'POST'])
 def user_registrar():

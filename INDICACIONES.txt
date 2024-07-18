@@ -1,0 +1,15 @@
+
+para utilizar el login, los admin se encuentran en la base de datos
+pero aqui esta uno: Nombre de usuario: "Admin1" Contraseña: "password1"
+
+el formulario no inserta datos pero si genera un pdf al momento de utilizar
+el boton de registrar, solo hay que llenar el formulario y pasar las validaciones
+solo que el qr que genera no lo imprime dentro del pdf
+
+dentro del formulario, los catalogos si funcionan y estan conectados con la base de
+datos
+
+el patron de diseño es "MVC"
+
+por cuestion de tiempo no pude terminar el crud del formulario principal, pero hay avances
+en el archivo Formulario.py

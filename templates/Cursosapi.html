@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask REST API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Menú Principal APIREST</h1>
+    <div id="menu">
+        <button onclick="fetchData('mostrar_todos')">Mostrar Todos</button>
+        
+       
+    </div>
+    <div id="result"></div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        function buscarUno() {
+            window.location.href = '/buscar_uno';
+        }
+
+        function registrar() {
+            window.location.href = '/registrar';
+        }
+    </script>
+</body>
+</html>

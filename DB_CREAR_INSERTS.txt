@@ -1,0 +1,92 @@
+-- Crear la base de datos
+CREATE DATABASE db_turno;
+
+-- Usar la base de datos
+USE db_turno;
+
+-- Crear la tabla nivel
+CREATE TABLE nivel (
+    id_nivel INT(11) NOT NULL AUTO_INCREMENT,
+    nivel VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id_nivel)
+);
+
+-- Crear la tabla municipio
+CREATE TABLE municipio (
+    id_municipio INT(11) NOT NULL AUTO_INCREMENT,
+    municipio VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id_municipio)
+);
+
+-- Crear la tabla asunto
+CREATE TABLE asunto (
+    id_asunto INT(11) NOT NULL AUTO_INCREMENT,
+    asunto VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id_asunto)
+);
+
+-- Crear la tabla formulario
+CREATE TABLE formulario (
+    no_turno INT(11) NOT NULL AUTO_INCREMENT,
+    nombre_solicitante VARCHAR(255) NOT NULL,
+    curp VARCHAR(18) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    paterno VARCHAR(255) NOT NULL,
+    materno VARCHAR(255) NOT NULL,
+    teléfono VARCHAR(10) NOT NULL,
+    celular VARCHAR(10) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    id_nivel INT(11) NOT NULL,
+    id_mun INT(11) NOT NULL,
+    id_asunto INT(11) NOT NULL,
+    estado VARCHAR(255) NOT NULL,
+    PRIMARY KEY (no_turno),
+    FOREIGN KEY (id_nivel) REFERENCES nivel(id_nivel),
+    FOREIGN KEY (id_mun) REFERENCES municipio(id_municipio),
+    FOREIGN KEY (id_asunto) REFERENCES asunto(id_asunto)
+);
+
+-- Crear la tabla administradores
+CREATE TABLE administradores (
+    no_admin INT(11) NOT NULL AUTO_INCREMENT,
+    nombre_admin VARCHAR(30) NOT NULL,
+    contraseña VARCHAR(20) NOT NULL,
+    PRIMARY KEY (no_admin)
+);
+
+-- Usar la base de datos
+USE db_turno;
+
+-- Insertar datos de prueba en la tabla nivel
+INSERT INTO nivel (nivel) VALUES ('Primaria');
+INSERT INTO nivel (nivel) VALUES ('Secundaria');
+INSERT INTO nivel (nivel) VALUES ('Preparatoria');
+
+-- Insertar datos de prueba en la tabla municipio
+INSERT INTO municipio (municipio) VALUES ('Saltillo');
+INSERT INTO municipio (municipio) VALUES ('Torreón');
+INSERT INTO municipio (municipio) VALUES ('Monclova');
+INSERT INTO municipio (municipio) VALUES ('Piedras Negras');
+INSERT INTO municipio (municipio) VALUES ('Acuña');
+INSERT INTO municipio (municipio) VALUES ('Ramos Arizpe');
+INSERT INTO municipio (municipio) VALUES ('San Pedro');
+INSERT INTO municipio (municipio) VALUES ('Frontera');
+INSERT INTO municipio (municipio) VALUES ('Múzquiz');
+INSERT INTO municipio (municipio) VALUES ('Sabinas');
+
+-- Insertar datos de prueba en la tabla asunto
+INSERT INTO asunto (asunto) VALUES ('Revisión de tesis');
+INSERT INTO asunto (asunto) VALUES ('Asesoría académica');
+INSERT INTO asunto (asunto) VALUES ('Consulta de expediente');
+
+-- Insertar datos de prueba en la tabla formulario
+INSERT INTO formulario (nombre_solicitante, curp, nombre, paterno, materno, teléfono, celular, correo, id_nivel, id_mun, id_asunto, estado) 
+VALUES 
+('Juan Pérez', 'CURP12345678901234', 'Juan', 'Pérez', 'López', '1234567890', '0987654321', 'juan.perez@example.com', 1, 1, 1, 'Pendiente'),
+('María García', 'CURP23456789012345', 'María', 'García', 'Martínez', '2345678901', '1987654321', 'maria.garcia@example.com', 2, 2, 2, 'Pendiente'),
+('Carlos Hernández', 'CURP34567890123456', 'Carlos', 'Hernández', 'González', '3456789012', '2987654321', 'carlos.hernandez@example.com', 3, 3, 3, 'Pendiente');
+
+-- Insertar datos de prueba en la tabla administradores
+INSERT INTO administradores (nombre_admin, contraseña) VALUES ('Admin1', 'password1');
+INSERT INTO administradores (nombre_admin, contraseña) VALUES ('Admin2', 'password2');
+INSERT INTO administradores (nombre_admin, contraseña) VALUES ('Admin3', 'password3');
